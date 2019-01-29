@@ -48,23 +48,9 @@ function Contact(firstName, lastName, phoneNumber, email, address) {
   this.firstName = firstName,
   this.lastName = lastName,
   this.phoneNumber = phoneNumber,
-  this.email = email,
+  this.emailList = email,
   this.address = address
 }
-
-function contactAddresses(workEmail, otherEmail, personalEmail) {
-  this.personalEmail = personalEmail,
-  this.workEmail = workEmail,
-  this.otherEmail = otherEmail
-  // this.workAddress = workAddress,
-  // this.homeAddress = homeAddress,
-  // this.otherAddress = otherAddress
-}
-
-// Contact.prototype.workEmail = function() {
-//   return this.workEmail+ " " + this.personalEmail;
-// }
-
 
 Contact.prototype.fullName = function() {
   return this.firstName + " " + this.lastName;
@@ -82,20 +68,6 @@ function displayContactDetails(addressBookToDisplay) {
   contactsList.html(htmlForContactInfo);
 };
 
-
-function showContact(contactId) {
-  var contact = addressBook.findContact(contactId);
-  $("#show-contact").show();
-  $(".first-name").html(contact.firstName);
-  $(".last-name").html(contact.lastName);
-  $(".phone-number").html(contact.phoneNumber);
-  $(".email").html(contact.email);
-  $(".address").html(contact.address);
-  var buttons = $("#buttons");
-  buttons.empty();
-  buttons.append("<button class='deleteButton' id=" +  + contact.id + ">Delete</button>");
-}
-
 function attachContactListeners() {
   $("ul#contacts").on("click", "li", function() {
     showContact(this.id);
@@ -111,15 +83,41 @@ $(document).ready(function() {
   attachContactListeners();
   $("form#new-contact").submit(function(event) {
     event.preventDefault();
+
+    function showContact(contactId) {
+      var contact = addressBook.findContact(contactId);
+      $("#show-contact").show();
+      $(".first-name").html(contact.firstName);
+      $(".last-name").html(contact.lastName);
+      $(".phone-number").html(contact.phoneNumber);
+      $(".email").html(contact.emailList.emailInput);
+      $(".work-email").html(contact.emailList.workEmailInput);
+      $(".personal-email").html(contact.emailList.personalEmailInput);
+      $(".other-email").html(contact.emailList.otherEmailInput);
+      $(".address").html(contact.address);
+      var buttons = $("#buttons");
+      buttons.empty();
+      buttons.append("<button class='deleteButton' id=" +  + contact.id + ">Delete</button>");
+    }
+
     var inputtedFirstName = $("input#new-first-name").val();
     var inputtedLastName = $("input#new-last-name").val();
     var inputtedPhoneNumber = $("input#new-phone-number").val();
-    var inputtedEmail = $("input#new-email").val();
+    var inputtedEmail = {
+         emailInput: $("input#new-email").val(),
+         workEmailInput: $("#new-work-email").val(),
+         personalEmailInput: $("#new-personal-email").val(),
+         otherEmailInput: $("#new-other-email").val()
+    }
+    console.log(inputtedEmail);
     var inputtedAddress = $("input#new-address").val();
     $("input#new-first-name").val("");
     $("input#new-last-name").val("");
     $("input#new-phone-number").val("");
     $("input#new-email").val("");
+    $("input#new-work-email").val("");
+    $("input#new-personal-email").val("");
+    $("input#new-other-email").val("");
     $("input#new-address").val("");
     var newContact = new Contact(inputtedFirstName, inputtedLastName, inputtedPhoneNumber, inputtedEmail, inputtedAddress);
     addressBook.addContact(newContact);
