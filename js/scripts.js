@@ -1,12 +1,18 @@
 // Business Logic for AddressBook ---------
 function AddressBook() {
   this.contacts = [],
-  this.currentId = 0
+  this.currentId = 0,
+  this.contactAddresses = []
 }
 
 AddressBook.prototype.addContact = function(contact) {
   contact.id = this.assignId();
   this.contacts.push(contact);
+}
+
+AddressBook.prototype.addEmail = function(contactAddress) {
+  contactAddress.id = this.assignId();
+  this.contactAddresses.push(contactAddress);
 }
 
 AddressBook.prototype.assignId = function() {
@@ -38,13 +44,27 @@ AddressBook.prototype.deleteContact = function(id) {
 }
 
 // Business Logic for Contacts ---------
-function Contact(firstName, lastName, phoneNumber, email) {
+function Contact(firstName, lastName, phoneNumber, email, address) {
   this.firstName = firstName,
   this.lastName = lastName,
-  this.phoneNumber = phoneNumber
-  this.email = email
+  this.phoneNumber = phoneNumber,
+  this.email = email,
   this.address = address
 }
+
+function contactAddresses(workEmail, otherEmail, personalEmail) {
+  this.personalEmail = personalEmail,
+  this.workEmail = workEmail,
+  this.otherEmail = otherEmail
+  // this.workAddress = workAddress,
+  // this.homeAddress = homeAddress,
+  // this.otherAddress = otherAddress
+}
+
+// Contact.prototype.workEmail = function() {
+//   return this.workEmail+ " " + this.personalEmail;
+// }
+
 
 Contact.prototype.fullName = function() {
   return this.firstName + " " + this.lastName;
@@ -61,6 +81,7 @@ function displayContactDetails(addressBookToDisplay) {
   });
   contactsList.html(htmlForContactInfo);
 };
+
 
 function showContact(contactId) {
   var contact = addressBook.findContact(contactId);
